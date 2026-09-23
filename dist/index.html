@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#081321">
+  <meta name="description" content="肖琛瑜的个人作品集：AIGC 影像、AI 视觉、IP 与产品设计。十年美术基础，以艺术与技术探索新的表达。">
+  <title>肖琛瑜 Xiao Chenyu — AIGC & Visual Design</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23081321'/%3E%3Cpath d='M17 19l18 26M35 19L17 45M48 20a13 13 0 100 24' fill='none' stroke='%23b9daff' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="preload" href="assets/opening.webp" as="image">
+  <link rel="stylesheet" href="style.css">
+  <script src="projects.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#works">跳至作品 / Skip to work</a>
+  <header class="site-header">
+    <a class="signature" href="#home" aria-label="肖琛瑜，回到首页"><span class="monogram">XC<span>✦</span></span><span class="signature-name">肖琛瑜<span>XIAO CHENYU</span></span></a>
+    <nav aria-label="主导航">
+      <button data-scene="1">关于 <span>ABOUT</span></button>
+      <a href="#works">作品 <span>WORK</span></a>
+      <a href="#contact">联系 <span>CONTACT</span></a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="story" id="home" aria-label="肖琛瑜的创作世界">
+      <div class="story-stage">
+        <div class="scene-fallback" aria-hidden="true"></div>
+        <canvas id="water" aria-hidden="true"></canvas>
+        <img class="portrait-assist" src="assets/portrait.webp" alt="" aria-hidden="true">
+        <div class="scene-shade" aria-hidden="true"></div>
+        <div class="opening-caption scene-copy" id="opening-copy">
+          <p class="eyebrow">ART MEETS ARTIFICIAL INTELLIGENCE</p>
+          <p class="opening-name">肖琛瑜 <span>XIAO CHENYU</span></p>
+          <p class="opening-role">AIGC 创作者 · AI 视觉设计师 · AI 产品设计师</p>
+        </div>
+        <section class="about scene-copy" id="about-copy" aria-label="个人简介" inert>
+          <p class="eyebrow">01 / ABOUT ME</p>
+          <h1>肖琛瑜<span>Xiao Chenyu<span class="title-star">✦</span></span></h1>
+          <p class="roles">AIGC 创作者<br>AI 视觉设计师 · AI 产品设计师</p>
+          <p class="english-role" lang="en">AIGC Creator · AI Visual Designer<br>AI Product Designer</p>
+          <div class="about-description">
+            <p>十年美术基础，敏锐的审美意识，<br class="desktop-break">扎实的专业技能。</p>
+            <p lang="en">Ten years of art training. A keen visual eye and strong technical skills.</p>
+          </div>
+          <div class="about-contacts">
+            <a href="tel:+8613786170673"><span>电话 / TEL</span>13786170673</a>
+            <a href="mailto:cuny_1214@qq.com"><span>邮箱 / EMAIL</span>cuny_1214@qq.com</a>
+            <button class="copy-wechat"><span>微信 / WECHAT</span>Cc061214lili <span class="copy-mark" aria-hidden="true">⧉</span></button>
+          </div>
+        </section>
+        <div class="story-bottom">
+          <button class="scroll-cue" id="next-scene"><span class="scroll-line" aria-hidden="true"></span><span id="scroll-label">向下探索 <small>SCROLL TO EXPLORE</small></span></button>
+          <div class="scene-nav" aria-label="开场章节"><button data-scene="0" class="active" aria-label="开场" aria-current="step">01</button><span></span><button data-scene="1" aria-label="个人简介">02</button><span></span><button data-scene="2" aria-label="创作工具">03</button></div>
+          <p class="water-hint">移动鼠标，泛起涟漪<span>MOVE & MAKE WAVES</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="works" id="works" aria-labelledby="works-title">
+      <div class="works-heading"><div><p class="eyebrow">02 / SELECTED PORTFOLIO</p><h2 id="works-title">创作，<span>不止一种可能。</span></h2></div><p class="works-english">SELECTED<br><em>Works.</em><span>影像 / 视觉 / 设计</span></p></div>
+      <div class="project-grid" id="project-grid"></div>
+    </section>
+
+    <footer id="contact">
+      <div class="footer-heading"><p class="eyebrow">03 / GET IN TOUCH</p><h2>一起创造<span>新的可能。</span></h2><p lang="en">Let's make something <em>different.</em></p></div>
+      <div class="footer-contacts"><a href="mailto:cuny_1214@qq.com"><span>EMAIL / 邮箱</span>cuny_1214@qq.com <b>↗</b></a><a href="tel:+8613786170673"><span>PHONE / 电话</span>13786170673 <b>↗</b></a><button class="copy-wechat"><span>WECHAT / 微信 · 点击复制</span>Cc061214lili <b>⧉</b></button></div>
+      <div class="footer-bottom"><span>© <span id="year"></span> 肖琛瑜 XIAO CHENYU</span><span>ART × AI</span><a href="#home">回到顶部 / BACK TO TOP ↑</a></div>
+    </footer>
+  </main>
+
+  <dialog id="project-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-toolbar"><span class="eyebrow" id="dialog-category"></span><button id="close-dialog" aria-label="关闭作品 / Close project">关闭 <span>CLOSE</span> <b>×</b></button></div>
+    <div class="dialog-scroll" id="dialog-scroll"><div class="dialog-heading"><p class="eyebrow" id="dialog-number"></p><h2 id="dialog-title"></h2><p id="dialog-english"></p></div><div id="dialog-content"></div><div class="dialog-end">— END OF PROJECT —<button id="back-to-work">返回作品集 / BACK TO WORK ↑</button></div></div>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
