@@ -38,6 +38,10 @@
   object-fit: contain;
 }
 
+.project-videos video {
+  margin-inline: auto;
+}
+
 .project-section-title {
   margin: 56px 0 18px;
   padding-top: 22px;

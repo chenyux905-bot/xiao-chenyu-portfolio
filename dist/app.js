@@ -92,7 +92,13 @@ function openProject(project, button) {
     const videos = element('div', `project-videos${project.videoLayout === 'portrait' ? ' is-portrait' : ''}`);
     project.videos.forEach((asset, i) => {
       const figure = element('figure'); const video = element('video');
-      video.controls = true; video.playsInline = true; video.preload = 'none'; video.poster = asset.poster; video.src = asset.src;
+      video.controls = true; video.playsInline = true; video.preload = 'metadata'; video.poster = asset.poster;
+      if (asset.width) video.style.maxWidth = `${asset.width}px`;
+      if (asset.sources?.length) {
+        asset.sources.forEach(item => { const source = element('source'); source.src = item.src; source.type = item.type; video.append(source); });
+      } else {
+        video.src = asset.src;
+      }
       video.setAttribute('aria-label', `${project.title}，视频 ${i+1}`);
       figure.append(video, element('figcaption', '', `${asset.title || project.title} / ${String(i+1).padStart(2, '0')}`)); videos.append(figure);
     });
@@ -144,7 +150,7 @@ document.querySelector('#close-dialog').addEventListener('click', closeProject);
 document.querySelector('#back-to-work').addEventListener('click', closeProject);
 dialog.addEventListener('click', event => { if(event.target === dialog) { const rect = dialog.getBoundingClientRect(); if(event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeProject(); } });
 dialog.addEventListener('close', () => {
-  content.querySelectorAll('video').forEach(video => { video.pause(); video.removeAttribute('src'); video.load(); });
+  content.querySelectorAll('video').forEach(video => { video.pause(); video.removeAttribute('src'); video.querySelectorAll('source').forEach(source => source.removeAttribute('src')); video.load(); });
   document.body.classList.remove('modal-open'); document.body.style.paddingRight = previousPadding;
   scrollTo({top:previousScroll,behavior:'instant'}); lastProjectButton?.focus({preventScroll:true});
 });
