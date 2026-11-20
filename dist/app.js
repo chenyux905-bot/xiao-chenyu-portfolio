@@ -94,10 +94,26 @@ function openProject(project, button) {
       const figure = element('figure'); const video = element('video');
       video.controls = true; video.playsInline = true; video.preload = 'metadata'; video.poster = asset.poster;
       if (asset.width) video.style.maxWidth = `${asset.width}px`;
-      if (asset.sources?.length) {
+      const attachProgressiveSources = () => {
+        video.removeAttribute('src');
+        video.replaceChildren();
+        if (!asset.sources?.length) { video.src = asset.src; return; }
         asset.sources.forEach(item => { const source = element('source'); source.src = item.src; source.type = item.type; video.append(source); });
+        video.load();
+      };
+      if (asset.hls && video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = asset.hls;
+      } else if (asset.hls && window.Hls?.isSupported()) {
+        const hls = new Hls({ enableWorker: true, backBufferLength: 30 });
+        video._hls = hls;
+        hls.loadSource(asset.hls);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.ERROR, (_event, data) => {
+          if (!data.fatal) return;
+          hls.destroy(); video._hls = null; attachProgressiveSources();
+        });
       } else {
-        video.src = asset.src;
+        attachProgressiveSources();
       }
       video.setAttribute('aria-label', `${project.title}，视频 ${i+1}`);
       figure.append(video, element('figcaption', '', `${asset.title || project.title} / ${String(i+1).padStart(2, '0')}`)); videos.append(figure);
@@ -150,7 +166,7 @@ document.querySelector('#close-dialog').addEventListener('click', closeProject);
 document.querySelector('#back-to-work').addEventListener('click', closeProject);
 dialog.addEventListener('click', event => { if(event.target === dialog) { const rect = dialog.getBoundingClientRect(); if(event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) closeProject(); } });
 dialog.addEventListener('close', () => {
-  content.querySelectorAll('video').forEach(video => { video.pause(); video.removeAttribute('src'); video.querySelectorAll('source').forEach(source => source.removeAttribute('src')); video.load(); });
+  content.querySelectorAll('video').forEach(video => { video.pause(); video._hls?.destroy(); video._hls = null; video.removeAttribute('src'); video.querySelectorAll('source').forEach(source => source.removeAttribute('src')); video.load(); });
   document.body.classList.remove('modal-open'); document.body.style.paddingRight = previousPadding;
   scrollTo({top:previousScroll,behavior:'instant'}); lastProjectButton?.focus({preventScroll:true});
 });
