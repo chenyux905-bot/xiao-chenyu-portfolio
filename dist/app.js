@@ -65,6 +65,7 @@ let previousPadding = '';
 function element(tag, className, text) { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined) node.textContent = text; return node; }
 projects.forEach((project, i) => {
   const button = element('button', 'project-card');
+  button.classList.add(`is-${project.coverShape || 'landscape'}`);
   button.setAttribute('aria-label', `查看作品：${project.title} / ${project.en}`);
   button.setAttribute('aria-haspopup', 'dialog');
   const art = element('div', 'project-art');
@@ -80,35 +81,57 @@ function openProject(project, button) {
   lastProjectButton = button;
   document.querySelector('#dialog-title').textContent = project.title;
   document.querySelector('#dialog-english').textContent = project.en;
+  const description = document.querySelector('#dialog-description');
+  description.textContent = project.description || '';
+  description.hidden = !project.description;
   document.querySelector('#dialog-category').textContent = `${project.zhcategory} / ${project.category}`;
   document.querySelector('#dialog-number').textContent = `PROJECT ${String(project.id).padStart(2, '0')} / XIAO CHENYU`;
   content.replaceChildren();
-  if (project.videos.length) {
-    const videos = element('div', 'project-videos');
+  function renderVideos() {
+    if (!project.videos.length) return;
+    const videos = element('div', `project-videos${project.videoLayout === 'portrait' ? ' is-portrait' : ''}`);
     project.videos.forEach((asset, i) => {
       const figure = element('figure'); const video = element('video');
       video.controls = true; video.playsInline = true; video.preload = 'none'; video.poster = asset.poster; video.src = asset.src;
       video.setAttribute('aria-label', `${project.title}，视频 ${i+1}`);
-      figure.append(video, element('figcaption', '', `${project.title} / ${String(i+1).padStart(2, '0')}`)); videos.append(figure);
+      figure.append(video, element('figcaption', '', `${asset.title || project.title} / ${String(i+1).padStart(2, '0')}`)); videos.append(figure);
     });
     content.append(videos);
   }
-  if (project.images.length) {
+  function renderImages() {
+    if (!project.images.length) return;
     const images = element('div', 'project-images');
     project.images.forEach((asset, i) => {
-      const figure = element('figure', asset.width / asset.height > 1.35 || project.id === 6 && i === 0 ? 'wide' : '');
+      const figure = element('figure', asset.width / asset.height > 1.35 || project.title === 'IP 全案与周边设计' && i === 0 ? 'wide' : '');
       const img = element('img'); img.src = asset.src; img.alt = `${project.title} — 作品图 ${i+1}`; img.loading = i < 2 ? 'eager' : 'lazy'; img.decoding = 'async'; img.width = asset.width; img.height = asset.height;
       figure.append(img); images.append(figure);
     });
     content.append(images);
   }
-  if (project.documents.length) {
+  function renderDocuments(documents, primary = false) {
+    if (!documents.length) return;
     const docs = element('div', 'project-documents');
-    project.documents.forEach(doc => {
+    if (primary) docs.classList.add('is-primary');
+    documents.forEach(doc => {
       const detail = element('details'); detail.append(element('summary', '', `${doc.title} / Creative notes`));
       const text = element('div', 'doc-text'); doc.paragraphs.forEach(paragraph => text.append(element('p', '', paragraph))); detail.append(text); docs.append(detail);
     });
     content.append(docs);
+  }
+  function renderSectionTitle(text) { content.append(element('h3', 'project-section-title', text)); }
+  if (project.layout === 'script-assets-storyboard') {
+    renderSectionTitle('剧本 / SCRIPT');
+    renderDocuments(project.documents.slice(0, 1), true);
+    renderSectionTitle('角色与视觉资产 / CHARACTER & VISUAL ASSETS');
+    renderImages();
+    renderSectionTitle('分镜与生成提示词 / STORYBOARD & PROMPTS');
+    renderDocuments(project.documents.slice(1));
+    renderSectionTitle('动态片段 / MOTION STUDIES');
+    renderVideos();
+  } else {
+    renderVideos();
+    renderImages();
+    renderDocuments(project.documents);
   }
   previousScroll = window.scrollY;
   previousPadding = document.body.style.paddingRight;

@@ -9,6 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23081321'/%3E%3Cpath d='M17 19l18 26M35 19L17 45M48 20a13 13 0 100 24' fill='none' stroke='%23b9daff' stroke-width='4'/%3E%3C/svg%3E">
   <link rel="preload" href="assets/opening.webp" as="image">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="overrides.css">
   <script src="projects.js" defer></script>
   <script src="app.js" defer></script>
 </head>
@@ -72,7 +73,7 @@
 
   <dialog id="project-dialog" aria-labelledby="dialog-title">
     <div class="dialog-toolbar"><span class="eyebrow" id="dialog-category"></span><button id="close-dialog" aria-label="关闭作品 / Close project">关闭 <span>CLOSE</span> <b>×</b></button></div>
-    <div class="dialog-scroll" id="dialog-scroll"><div class="dialog-heading"><p class="eyebrow" id="dialog-number"></p><h2 id="dialog-title"></h2><p id="dialog-english"></p></div><div id="dialog-content"></div><div class="dialog-end">— END OF PROJECT —<button id="back-to-work">返回作品集 / BACK TO WORK ↑</button></div></div>
+    <div class="dialog-scroll" id="dialog-scroll"><div class="dialog-heading"><p class="eyebrow" id="dialog-number"></p><h2 id="dialog-title"></h2><p id="dialog-english"></p><p id="dialog-description"></p></div><div id="dialog-content"></div><div class="dialog-end">— END OF PROJECT —<button id="back-to-work">返回作品集 / BACK TO WORK ↑</button></div></div>
   </dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
